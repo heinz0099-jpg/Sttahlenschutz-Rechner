@@ -219,7 +219,7 @@
         Strahlenschutz-Rechner
     </h1>
 
-    <div class="nav-bar">
+        <div class="nav-bar">
         <button id="nav-distanz" onclick="showScreen('distanz')" class="nav-button active">Abstand</button>
         <button id="nav-einheit" onclick="showScreen('einheit')" class="nav-button">Einheiten</button>
         <button id="nav-dauer" onclick="showScreen('dauer')" class="nav-button">Dauer</button>
@@ -227,7 +227,7 @@
         <button id="nav-tkz" onclick="showScreen('tkz')" class="nav-button">TKZ/DL</button>
         <button id="nav-aktivitaet" onclick="showScreen('aktivitaet')" class="nav-button">Aktivität</button>
         <button id="nav-schutzwert" onclick="showScreen('schutzwert')" class="nav-button">Schutzwert</button>
-        <button id="nav-adr" onclick="showScreen('adr')" class="nav-button">Info ADR</button>
+        <button id="nav-adr" onclick="showScreen('adr')" class="nav-button">Info ADR</button>
     </div>
 
     <div id="screen-distanz" class="card">
@@ -440,51 +440,87 @@
         </div>
     </div>
 
-    <div id="screen-adr" class="card hidden">
-        <h2 class="subheader">8. Information zu ADR/RID (Radioaktiv)</h2>
-        <p class="text-info">Wichtige Grenzwerte, Kategorien und Abstandsregeln für den Gefahrguttransport (Klasse 7, radioaktive Stoffe).</p>
 
-        <div class="flex-col">
-            <div class="form-group">
-                <h3 style="font-size: 1rem; font-weight: 600; color: #1f2937; margin-bottom: 0.5rem;">Kategorien nach Transportkennzahl (TKZ) und Oberflächen-Dosisleistung (DL)</h3>
-                <table style="width: 100%; border-collapse: collapse; font-size: 0.875rem;">
-                    <thead>
-                        <tr style="background-color: #eef2ff;">
-                            <th style="border: 1px solid #ddd; padding: 0.5rem; text-align: left;">Kategorie</th>
-                            <th style="border: 1px solid #ddd; padding: 0.5rem; text-align: center;">TKZ (max.)</th>
-                            <th style="border: 1px solid #ddd; padding: 0.5rem; text-align: center;">Oberflächen-DL (max. μSv/h)</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td style="border: 1px solid #ddd; padding: 0.5rem; background-color: #f0fdf4;">**I - Weiß**</td>
-                            <td style="border: 1px solid #ddd; padding: 0.5rem; text-align: center;">0</td>
-                            <td style="border: 1px solid #ddd; padding: 0.5rem; text-align: center;">5</td>
-                        </tr>
-                        <tr>
-                            <td style="border: 1px solid #ddd; padding: 0.5rem; background-color: #fffbeb;">**II - Gelb**</td>
-                            <td style="border: 1px solid #ddd; padding: 0.5rem; text-align: center;">1</td>
-                            <td style="border: 1px solid #ddd; padding: 0.5rem; text-align: center;">500</td>
-                        </tr>
-                        <tr>
-                            <td style="border: 1px solid #ddd; padding: 0.5rem; background-color: #fef2f2;">**III - Gelb**</td>
-                            <td style="border: 1px solid #ddd; padding: 0.5rem; text-align: center;">10</td>
-                            <td style="border: 1px solid #ddd; padding: 0.5rem; text-align: center;">2000</td>
-                        </tr>
-                    </tbody>
-                </table>
-                <p style="font-size: 0.75rem; color: #6b7280; margin-top: 0.5rem;">Hinweis: Die Oberflächen-DL darf 2 mSv/h nicht überschreiten (Regel der Klasse III-Gelb)</p>
-            </div>
+    <div id="screen-adr" class="card hidden">
+        <h2><span style="font-size: 1.5em;">ℹ️</span> Info ADR: Kategorien & Verpackungstypen (Klasse 7)</h2>
+        <p class="text-info">Diese Übersicht fasst die wichtigsten Grenzwerte für die Klassifizierung von radioaktiven Versandstücken gemäß den Transportvorschriften (ADR/RID/IMDG-Code) zusammen.</p>
 
-            <div class="form-group" style="margin-top: 2rem;">
-                <h3 style="font-size: 1rem; font-weight: 600; color: #1f2937; margin-bottom: 0.5rem;">Mindestabstand zur Ladung (gem. ADR 7.5.11 CV33)</h3>
-                <p style="font-size: 0.875rem; color: #4b5563; margin-bottom: 0.5rem;">Dieser Abstand muss in der Regel **1 Meter** von den Wänden der Versandstücke in den Ruhezeiten eingehalten werden, wenn die **TKZ > 0** ist.</p>
-                
-                <p style="font-size: 0.75rem; color: #6b7280;">Der Abstand ist in der Regel einzuhalten zu: Fahrerkabine, Schlafplätzen, Aufenthaltsräumen, unbegleiteten Reisenden und Film- oder Röntgenplatten.</p>
-            </div>
-        </div>
-    </div>
-    <p class="text-center-sm">Alle Berechnungen sind Näherungen und dienen nur als Hilfsmittel.</p>
+        <h3 class="subheader" style="margin-top: 1.5rem;">1. Dosisleistungs-Kategorien und Grenzwerte</h3>
+
+        <table style="width: 100%; border-collapse: collapse; margin-bottom: 20px; font-size: 0.875rem;">
+            <thead>
+                <tr style="background-color: #f2f2f2;">
+                    <th style="border: 1px solid #ddd; padding: 6px; text-align: left;">Kategorie</th>
+                    <th style="border: 1px solid #ddd; padding: 6px; text-align: left;">Max. DL Oberfläche</th>
+                    <th style="border: 1px solid #ddd; padding: 6px; text-align: left;">Max. DL in 1 m</th>
+                    <th style="border: 1px solid #ddd; padding: 6px; text-align: left;">Max. TI</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td style="border: 1px solid #ddd; padding: 6px;">**Freigestellt**</td>
+                    <td style="border: 1px solid #ddd; padding: 6px;">&le; 5 µSv/h</td>
+                    <td style="border: 1px solid #ddd; padding: 6px;">—</td>
+                    <td style="border: 1px solid #ddd; padding: 6px;">**0**</td>
+                </tr>
+                <tr>
+                    <td style="border: 1px solid #ddd; padding: 6px;">**I - WEISS**</td>
+                    <td style="border: 1px solid #ddd; padding: 6px;">&le; 5 µSv/h</td>
+                    <td style="border: 1px solid #ddd; padding: 6px;">—</td>
+                    <td style="border: 1px solid #ddd; padding: 6px;">**0**</td>
+                </tr>
+                <tr style="background-color: #fff2cc;">
+                    <td style="border: 1px solid #ddd; padding: 6px;">**II - GELB**</td>
+                    <td style="border: 1px solid #ddd; padding: 6px;">&le; 500 µSv/h</td>
+                    <td style="border: 1px solid #ddd; padding: 6px;">&le; 10 µSv/h</td>
+                    <td style="border: 1px solid #ddd; padding: 6px;">**&le; 1**</td>
+                </tr>
+                <tr style="background-color: #ffd966;">
+                    <td style="border: 1px solid #ddd; padding: 6px;">**III - GELB**</td>
+                    <td style="border: 1px solid #ddd; padding: 6px;">&le; 2000 µSv/h</td>
+                    <td style="border: 1px solid #ddd; padding: 6px;">&le; 100 µSv/h</td>
+                    <td style="border: 1px solid #ddd; padding: 6px;">**&le; 10**</td>
+                </tr>
+                <tr style="background-color: #ffc000;">
+                    <td style="border: 1px solid #ddd; padding: 6px;">**III - GELB (Ausschl.)**</td>
+                    <td style="border: 1px solid #ddd; padding: 6px;">&le; 10 mSv/h</td>
+                    <td style="border: 1px solid #ddd; padding: 6px;">&le; 100 µSv/h</td>
+                    <td style="border: 1px solid #ddd; padding: 6px;">**&le; 10**</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h3 class="subheader" style="margin-top: 1.5rem;">2. Verpackungstypen (Bauart)</h3>
+        <p class="text-info">Der Verpackungstyp definiert die Robustheit der Abschirmung in Unfallsituationen in Abhängigkeit von der Aktivität (A) im Verhältnis zu den nuklidspezifischen Grenzwerten A<sub>1</sub> und A<sub>2</sub>.</p>
+
+        <table style="width: 100%; border-collapse: collapse; font-size: 0.875rem;">
+            <thead>
+                <tr style="background-color: #f2f2f2;">
+                    <th style="border: 1px solid #ddd; padding: 6px; text-align: left;">Typ</th>
+                    <th style="border: 1px solid #ddd; padding: 6px; text-align: left;">Aktivitätsgrenze</th>
+                    <th style="border: 1px solid #ddd; padding: 6px; text-align: left;">Anforderung / Zweck</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td style="border: 1px solid #ddd; padding: 6px;">**Typ A**</td>
+                    <td style="border: 1px solid #ddd; padding: 6px;">A &le; A<sub>1</sub> (Besondere Form) oder A &le; A<sub>2</sub> (Sonstige Form)</td>
+                    <td style="border: 1px solid #ddd; padding: 6px;">Muss **normalen** Transportbedingungen standhalten.</td>
+                </tr>
+                <tr>
+                    <td style="border: 1px solid #ddd; padding: 6px;">**Typ B**</td>
+                    <td style="border: 1px solid #ddd; padding: 6px;">A > A<sub>1</sub> / A<sub>2</sub> (Hohe Aktivität)</td>
+                    <td style="border: 1px solid #ddd; padding: 6px;">Muss **schweren Unfällen** standhalten.</td>
+                </tr>
+                <tr>
+                    <td style="border: 1px solid #ddd; padding: 6px;">**Typ C**</td>
+                    <td style="border: 1px solid #ddd; padding: 6px;">Für höchste Aktivitäten (Luftverkehr)</td>
+                    <td style="border: 1px solid #ddd; padding: 6px;">Höchste Sicherheitsstufe.</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+        <p class="text-center-sm">Alle Berechnungen sind Näherungen und dienen nur als Hilfsmittel.</p>
 
 </div>
 
@@ -511,7 +547,7 @@
 
     // --- Globale Funktionen für die App-Navigation ---
     
-    // Die Screens und Buttons werden nur einmal beim Laden des Skripts abgerufen.
+        // Die Screens und Buttons werden nur einmal beim Laden des Skripts abgerufen.
     const screens = {
         'distanz': document.getElementById('screen-distanz'),
         'einheit': document.getElementById('screen-einheit'),
@@ -519,8 +555,8 @@
         'total-dose': document.getElementById('screen-total-dose'),
         'tkz': document.getElementById('screen-tkz'),         
         'aktivitaet': document.getElementById('screen-aktivitaet'), 
-        'schutzwert': document.getElementById('screen-schutzwert'),
-        'adr': document.getElementById('screen-adr')
+        'schutzwert': document.getElementById.getElementById('screen-schutzwert'),
+        'adr': document.getElementById('screen-adr') // NEUER EINTRAG HINZUGEFÜGT
     };
     
     const navButtons = {
@@ -531,7 +567,7 @@
         'tkz': document.getElementById('nav-tkz'),             
         'aktivitaet': document.getElementById('nav-aktivitaet'), 
         'schutzwert': document.getElementById('nav-schutzwert'),
-        'adr': document.getElementById('nav-adr')
+        'adr': document.getElementById('nav-adr') // NEUER EINTRAG HINZUGEFÜGT
     };
 
     /**
@@ -828,42 +864,40 @@
         if (isNaN(dl0) || isNaN(dlx) || dl0 <= 0 || dlx < 0) {
             resultBox.classList.remove('hidden');
             resultBox.classList.add('error');
-            resultBox.innerHTML = 'Bitte beide Felder mit gültigen Werten ausfüllen. DL (ohne) muss > 0 sein.';
+            resultBox.innerHTML = 'Bitte alle Felder mit gültigen Werten (> 0 für DL ohne Abschirmung) ausfüllen.';
             return;
         }
-        
-        if (dl0 < dlx) {
+
+        if (dlx > dl0 && dlx > 0) {
             resultBox.classList.remove('hidden');
             resultBox.classList.add('error');
-            resultBox.innerHTML = 'Die Dosisleistung MIT Abschirmung kann nicht höher sein als OHNE.';
+            resultBox.innerHTML = 'Dosisleistung MIT Abschirmung kann nicht höher sein als OHNE Abschirmung (außer DL MIT ist 0).';
             return;
         }
 
         resultBox.classList.remove('error');
-        
         let schutzwert;
+
         if (dlx === 0) {
-            schutzwert = Infinity; // Unendlich hoher Schutzwert, wenn DLx 0 ist
+            schutzwert = "Sehr hoch (> 1000)"; // Infinity, aber für die Anzeige gerundet
+            resultBox.innerHTML = `
+                <div class="result-title">Schutzwert (S):</div>
+                <div class="result-value">Sehr Hoch (DL=0)</div>
+                <div style="font-size: 0.875rem; margin-top: 0.25rem; color: #374151;">Die Abschirmung ist maximal effektiv (Dosisleistung = 0).</div>
+            `;
         } else {
             schutzwert = dl0 / dlx;
+            const schutzwertFormatted = formatToGerman(schutzwert, 2);
+            resultBox.innerHTML = `
+                <div class="result-title">Schutzwert (S):</div>
+                <div class="result-value">${schutzwertFormatted}</div>
+                <div style="font-size: 0.875rem; margin-top: 0.25rem; color: #374151;">Die Dosisleistung wurde um den Faktor ${schutzwertFormatted} reduziert.</div>
+            `;
         }
 
-        const schutzwertFormatted = isFinite(schutzwert) ? formatToGerman(schutzwert, 2) : 'Unendlich (∞)';
-        const reduktionProzent = isFinite(schutzwert) ? formatToGerman(100 * (1 - (1 / schutzwert)), 1) : '100';
-
-        resultBox.innerHTML = `
-            <div class="result-title">Berechneter Schutzwert (S):</div>
-            <div class="result-value">${schutzwertFormatted}</div>
-            <div style="font-size: 0.875rem; margin-top: 0.25rem; color: #374151;">
-                Reduktion der Dosisleistung um ${reduktionProzent} %.
-            </div>
-        `;
         resultBox.classList.remove('hidden');
     }
-    
-// KEINE Funktion für den ADR-Screen nötig, da es nur eine Informationsseite ist
 
 </script>
-
 </body>
 </html>
