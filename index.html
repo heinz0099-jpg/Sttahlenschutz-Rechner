@@ -107,7 +107,42 @@
         }
         .nav-button.active { background-color: var(--color-indigo-dark); opacity: 1; }
 
-        
+        /* UPDATE BANNER STYLING */
+        #update-banner {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            right: 20px;
+            max-width: 440px;
+            margin: 0 auto;
+            background-color: #1f2937;
+            color: white;
+            padding: 16px;
+            border-radius: 12px;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 9999;
+            border: 1px solid var(--color-indigo);
+            animation: slideUp 0.5s ease-out;
+        }
+        @keyframes slideUp {
+            from { transform: translateY(100px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+        .update-btn {
+            background-color: var(--color-indigo);
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+            font-size: 0.875rem;
+        }
+        .update-btn:hover { background-color: var(--color-indigo-dark); }
+
         /* FORM ELEMENTS & REST */
         input[type="text"], input[type="number"], select { 
             border: 1px solid #d1d5db;
@@ -192,17 +227,37 @@
     <p class="text-center-sm">Alle Berechnungen sind Näherungen und dienen nur als Hilfsmittel.</p>
 </div>
 
-
+<div id="update-banner" class="hidden">
+    <span>Neue Version verfügbar!</span>
+    <button class="update-btn" onclick="reloadPage()">Update laden</button>
+</div>
 
 <script>
-   <script>
-    // Einfache Service Worker Registrierung ohne Update-Logik
+    /* SERVICE WORKER UPDATE LOGIC */
+    let newWorker;
+
     if ('serviceWorker' in navigator) {
-        window.addEventListener('load', () => {
-            navigator.serviceWorker.register('service-worker.js');
+        navigator.serviceWorker.register('sw.js').then(reg => {
+            reg.addEventListener('updatefound', () => {
+                newWorker = reg.installing;
+                newWorker.addEventListener('statechange', () => {
+                    if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+                        document.getElementById('update-banner').classList.remove('hidden');
+                    }
+                });
+            });
         });
     }
-    
+
+    function reloadPage() {
+        if (newWorker) {
+            newWorker.postMessage({ action: 'skipWaiting' });
+        }
+        navigator.serviceWorker.addEventListener('controllerchange', () => {
+            window.location.reload();
+        });
+    }
+
     /* DEINE BERECHNUNGS-LOGIK (Unverändert) */
     function formatToGerman(number, precision) {
         return number.toLocaleString('de-DE', { useGrouping: false, minimumFractionDigits: precision, maximumFractionDigits: precision });
