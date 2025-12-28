@@ -235,30 +235,41 @@
 <script>
     /* SERVICE WORKER UPDATE LOGIC */
    let newWorker;
+let isFirstInstall = false;
 
 if ('serviceWorker' in navigator) {
+    // 1. Prüfen, ob dies die allererste Installation ist
+    if (!navigator.serviceWorker.controller) {
+        isFirstInstall = true;
+    }
+
     navigator.serviceWorker.register('service-worker.js').then(reg => {
-        
-        // 1. Prüfung beim Laden: Wartet bereits ein SW?
-        // Aber nur anzeigen, wenn auch ein Controller existiert (bedeutet: es ist ein Update)
-        if (reg.waiting && navigator.serviceWorker.controller) {
+        // Falls ein Update im Hintergrund wartet (z.B. nach manuellem Refresh)
+        if (reg.waiting && !isFirstInstall) {
             newWorker = reg.waiting;
             showUpdateBar();
         }
 
-        // 2. Prüfung auf neue Updates während die App läuft
         reg.addEventListener('updatefound', () => {
             newWorker = reg.installing;
             newWorker.addEventListener('statechange', () => {
-                // Der entscheidende Check: state 'installed' UND controller vorhanden
-                if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+                // Der Button erscheint NUR, wenn:
+                // - der Status 'installed' ist
+                // - es NICHT die Erstinstallation ist
+                // - bereits ein Controller (alte Version) die Seite steuert
+                if (newWorker.state === 'installed' && !isFirstInstall && navigator.serviceWorker.controller) {
                     showUpdateBar();
+                }
+                
+                // Sobald der erste SW aktiv wird, ist es keine Erstinstallation mehr für den nächsten Check
+                if (newWorker.state === 'activated') {
+                    isFirstInstall = false;
                 }
             });
         });
     });
 
-    // 3. Verhindert Reload-Schleifen
+    // Schutz vor Endlos-Reloads
     let refreshing = false;
     navigator.serviceWorker.addEventListener('controllerchange', () => {
         if (!refreshing) {
@@ -270,15 +281,13 @@ if ('serviceWorker' in navigator) {
 
 function showUpdateBar() {
     const banner = document.getElementById('update-banner');
-    if (banner) {
-        banner.classList.remove('hidden');
-        // Falls du CSS-Animationen nutzt, kannst du sie hier triggern
-    }
+    if (banner) banner.classList.remove('hidden');
 }
 
 function reloadPage() {
+    // Banner sofort verstecken
     const banner = document.getElementById('update-banner');
-    if (banner) banner.classList.add('hidden'); // Sofort verstecken
+    if (banner) banner.classList.add('hidden');
     
     if (newWorker) {
         newWorker.postMessage({ action: 'skipWaiting' });
