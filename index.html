@@ -104,6 +104,11 @@
             background-color: var(--color-indigo);
             opacity: 0.75;
             margin: 0.2rem; /* Hinzugefügter Rand für bessere Touch-Erkennung */
+            /* Damit A-Tags wie Buttons aussehen */
+            text-decoration: none; 
+            display: flex; 
+            justify-content: center;
+            align-items: center;
         }
         .nav-button:hover {
             opacity: 1;
@@ -240,7 +245,7 @@
         <button id="nav-tkz" onclick="showScreen('tkz')" class="nav-button">TKZ/DL</button>
         <button id="nav-aktivitaet" onclick="showScreen('aktivitaet')" class="nav-button">Aktivität</button>
         <button id="nav-schutzwert" onclick="showScreen('schutzwert')" class="nav-button">Schutzwert</button>
-        <button id="nav-ADR-Info" onclick="showScreen('ADR-Info')" class="nav-button">ADR-Info</button>
+        <a href="ADR_Info.pdf" target="_blank" id="nav-ADR-Info" class="nav-button">ADR-Info</a>
     </div>
 
     <div id="screen-distanz" class="card">
@@ -452,19 +457,8 @@
             <div id="result-schutzwert" class="result-box hidden"></div>
         </div>
     </div>
-    
-    <div id="screen-ADR-Info" class="card hidden" style="padding: 0;">
-        <h2 class="subheader" style="padding: 1.5rem 1.5rem 0 1.5rem; margin-bottom: 0.5rem;">8. ADR-Transportinformationen</h2>
-        
-        <iframe id="adr-pdf-viewer" 
-                src="ADR_Info.pdf" 
-                style="width: 100%; height: 80vh; border: none; min-height: 400px;" 
-                title="ADR Transportinformationen PDF">
-            Ihr Browser unterstützt keine eingebetteten PDFs. <a href="ADR_Info.pdf" target="_blank">Klicken Sie hier, um das PDF direkt herunterzuladen.</a>
-        </iframe>
-        
-        <p class="text-center-sm" style="padding: 0.5rem 1.5rem 1.5rem 1.5rem;">Stellen Sie sicher, dass die Datei **ADR_Info.pdf** im gleichen Ordner liegt.</p>
-    </div>
+
+
     <p class="text-center-sm">Alle Berechnungen sind Näherungen und dienen nur als Hilfsmittel.</p>
 
 </div>
@@ -500,8 +494,7 @@
         'total-dose': document.getElementById('screen-total-dose'),
         'tkz': document.getElementById('screen-tkz'),         
         'aktivitaet': document.getElementById('screen-aktivitaet'), 
-        'schutzwert': document.getElementById('screen-schutzwert'),
-        'ADR-Info': document.getElementById('screen-ADR-Info') // NEU HINZUGEFÜGT
+        'schutzwert': document.getElementById('screen-schutzwert') 
     };
     
     const navButtons = {
@@ -511,8 +504,8 @@
         'total-dose': document.getElementById('nav-total-dose'),
         'tkz': document.getElementById('nav-tkz'),           
         'aktivitaet': document.getElementById('nav-aktivitaet'), 
-        'schutzwert': document.getElementById('nav-schutzwert'),
-        'ADR-Info': document.getElementById('nav-ADR-Info') // NEU HINZUGEFÜGT
+        'schutzwert': document.getElementById('nav-schutzwert') 
+        // nav-ADR-Info ist jetzt ein direkter Link und wird nicht mehr über showScreen() verwaltet.
     };
 
     /**
@@ -537,6 +530,12 @@
                     navButtons[id].classList.remove('active');
                 }
             }
+        }
+        
+        // Stellt sicher, dass der ADR-Link nicht die aktive Klasse hat, wenn ein Rechner ausgewählt wird
+        const adrLink = document.getElementById('nav-ADR-Info');
+        if (adrLink) {
+            adrLink.classList.remove('active');
         }
     }
 
