@@ -1,4 +1,4 @@
-const CACHE_NAME = "strahlenschutz-cache-v5";
+const CACHE_NAME = "strahlenschutz-cache-v6";
 const URLS_TO_CACHE = [
   "./",
   "./index.html",
@@ -22,14 +22,9 @@ self.addEventListener("activate", event => {
   event.waitUntil(
     caches.keys().then(cacheNames => {
       return Promise.all(
-        cacheNames
-          .filter(name => name !== CACHE_NAME)
-          .map(name => caches.delete(name))
+        cacheNames.filter(name => name !== CACHE_NAME).map(name => caches.delete(name))
       );
-    }).then(() => {
-      // Übernimmt sofort die Kontrolle über alle geöffneten Fenster
-      return self.clients.claim();
-    })
+    }).then(() => self.clients.claim()) // Ganz wichtig: claim() aktiviert den SW sofort für alle Fenster
   );
 });
 
