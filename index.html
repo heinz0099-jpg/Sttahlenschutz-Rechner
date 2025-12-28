@@ -234,46 +234,55 @@
 
 <script>
     /* SERVICE WORKER UPDATE LOGIC */
-    let newWorker;
+   let newWorker;
 
 if ('serviceWorker' in navigator) {
     navigator.serviceWorker.register('service-worker.js').then(reg => {
-        // Falls beim Laden schon ein SW im Status 'waiting' ist (z.B. nach Tab-Wechsel)
-        if (reg.waiting) {
+        
+        // 1. Prüfung beim Laden: Wartet bereits ein SW?
+        // Aber nur anzeigen, wenn auch ein Controller existiert (bedeutet: es ist ein Update)
+        if (reg.waiting && navigator.serviceWorker.controller) {
             newWorker = reg.waiting;
             showUpdateBar();
         }
 
+        // 2. Prüfung auf neue Updates während die App läuft
         reg.addEventListener('updatefound', () => {
             newWorker = reg.installing;
             newWorker.addEventListener('statechange', () => {
-                // Nur anzeigen, wenn ein SW installiert wurde UND bereits ein Controller (alter SW) aktiv ist
+                // Der entscheidende Check: state 'installed' UND controller vorhanden
                 if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
                     showUpdateBar();
                 }
             });
         });
     });
+
+    // 3. Verhindert Reload-Schleifen
+    let refreshing = false;
+    navigator.serviceWorker.addEventListener('controllerchange', () => {
+        if (!refreshing) {
+            window.location.reload();
+            refreshing = true;
+        }
+    });
 }
 
 function showUpdateBar() {
     const banner = document.getElementById('update-banner');
-    banner.classList.remove('hidden');
+    if (banner) {
+        banner.classList.remove('hidden');
+        // Falls du CSS-Animationen nutzt, kannst du sie hier triggern
+    }
 }
 
 function reloadPage() {
+    const banner = document.getElementById('update-banner');
+    if (banner) banner.classList.add('hidden'); // Sofort verstecken
+    
     if (newWorker) {
-        // Signal an den SW zum Aktivieren
         newWorker.postMessage({ action: 'skipWaiting' });
     }
-    
-    // Banner sofort verstecken, um Feedback zu geben
-    document.getElementById('update-banner').classList.add('hidden');
-
-    // Sobald der neue SW übernimmt, Seite neu laden
-    navigator.serviceWorker.addEventListener('controllerchange', () => {
-        window.location.reload();
-    });
 }
 
     /* DEINE BERECHNUNGS-LOGIK (Unverändert) */
